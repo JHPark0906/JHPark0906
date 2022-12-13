@@ -6,103 +6,57 @@ import java.util.stream.Stream;
 
 public class Sorting {
 
+    static final int REPETITION = 100;
+
     static int count = 0;
+
     static long time = 0;
 
+    static int[] result = new int[32];
+
+    static int size;
+
     public static void main(String[] args) {
+        int[] inputSize = {100, 200, 500, 1000, 2000, 3000, 4000, 5000};
+        boolean check = true;
 
-        init();
-        for (int i = 0; i <= 100; i++) {
-            long start = System.nanoTime();
-            quicksort(randomArray(100));
-            long end = System.nanoTime();
-            time += end - start;
+        for (int i = 0; i < 8; i++) {
+            init();
+            for (int j = 0; j < REPETITION; j++) {
+                ArrayList arr = randomArray(inputSize[i]);
+                long start = System.nanoTime();
+                ArrayList<Integer> result = quicksort(arr);
+                time += (System.nanoTime() - start);
+                check &= checker(result);
+            }
+            result[2 * i] = count / REPETITION;
+            result[2 * i + 1] = (int)(time / REPETITION);
         }
-        System.out.print(" 100개:   ");
-        System.out.print(count / 100 + "번,  ");
-        System.out.println(time / 100 + "ns");
 
-        init();
-        for (int i = 0; i <= 100; i++) {
-            long start = System.nanoTime();
-            quicksort(randomArray(200));
-            long end = System.nanoTime();
-            time += end - start;
+        for (int i = 0; i < 8; i++) {
+            init();
+            for (int j = 0; j < REPETITION; j++) {
+                ArrayList arr = randomArray(inputSize[i]);
+                long start = System.nanoTime();
+                ArrayList<Integer> result = heapsort(arr);
+                time += (System.nanoTime() - start);
+                check &= checker(result);
+            }
+            result[2 * i + 16] = count / REPETITION;
+            result[2 * i + 17] = (int)(time / REPETITION);
         }
-        System.out.print(" 200개:  ");
-        System.out.print(count / 100 + "번,  ");
-        System.out.println(time / 100 + "ns");
 
-        init();
-        for (int i = 0; i <= 100; i++) {
-            long start = System.nanoTime();
-            quicksort(randomArray(500));
-            long end = System.nanoTime();
-            time += end - start;
+        System.out.println(check);
+        System.out.println("Quicksort\t\tHeapsort");
+        System.out.println("Count\tTime\tCount\tTime");
+        for(int i = 0; i < 8; i++) {
+            System.out.println(result[2 * i] + "\t" + result[2 * i + 1] + "\t" + result[2 * i + 16] + "\t" + result[2 * i + 17]);
         }
-        System.out.print(" 500개:  ");
-        System.out.print(count / 100 + "번,  ");
-        System.out.println(time / 100 + "ns");
-
-        init();
-        for (int i = 0; i <= 100; i++) {
-            long start = System.nanoTime();
-            quicksort(randomArray(1000));
-            long end = System.nanoTime();
-            time += end - start;
-        }
-        System.out.print("1000개: ");
-        System.out.print(count / 100 + "번,  ");
-        System.out.println(time / 100 + "ns");
-
-        init();
-        for (int i = 0; i <= 100; i++) {
-            long start = System.nanoTime();
-            quicksort(randomArray(2000));
-            long end = System.nanoTime();
-            time += end - start;
-        }
-        System.out.print("2000개: ");
-        System.out.print(count / 100 + "번, ");
-        System.out.println(time / 100 + "ns");
-
-        init();
-        for (int i = 0; i <= 100; i++) {
-            long start = System.nanoTime();
-            quicksort(randomArray(3000));
-            long end = System.nanoTime();
-            time += end - start;
-        }
-        System.out.print("3000개: ");
-        System.out.print(count / 100 + "번, ");
-        System.out.println(time / 100 + "ns");
-
-        init();
-        for (int i = 0; i <= 100; i++) {
-            long start = System.nanoTime();
-            quicksort(randomArray(4000));
-            long end = System.nanoTime();
-            time += end - start;
-        }
-        System.out.print("4000개: ");
-        System.out.print(count / 100 + "번, ");
-        System.out.println(time / 100 + "ns");
-
-        init();
-        for (int i = 0; i <= 100; i++) {
-            long start = System.nanoTime();
-            quicksort(randomArray(5000));
-            long end = System.nanoTime();
-            time += end - start;
-        }
-        System.out.print("5000개: ");
-        System.out.print(count / 100 + "번, ");
-        System.out.println(time / 100 + "ns");
-
     }
 
     public static void init() {
-        count = 0; time = 0;
+        count = 0;
+        time = 0;
     }
 
     public static ArrayList<Integer> randomArray(int n) {
@@ -114,6 +68,17 @@ public class Sorting {
         return arr;
     }
 
+    public static boolean checker(ArrayList<Integer> arr) {
+        boolean result = true;
+        for (int i = 1; i < arr.size(); i++) {
+            if (arr.get(i - 1) > arr.get(i)) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
     public static ArrayList<Integer> quicksort(ArrayList<Integer> arr){
         if (arr.size() <= 1) return arr;
         int pivot = arr.get(arr.size() / 2);
@@ -121,7 +86,7 @@ public class Sorting {
         ArrayList<Integer> equal = new ArrayList<>();
         ArrayList<Integer> right = new ArrayList<>();
         for (int n : arr) {
-            count++;
+            count += 2;
             if (n < pivot) {
                 left.add(n);
             }
@@ -135,9 +100,31 @@ public class Sorting {
         return (ArrayList<Integer>) Stream.of(quicksort(left), equal, quicksort(right)).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
-    public static ArrayList<Integer> heapsort(ArrayList<Integer> arr){
+    public static ArrayList<Integer> heapsort(ArrayList<Integer> arr) {
+        if (arr.size() <= 1) return arr;
+        size = arr.size();
+        for (int i = size - 1; i >= 0; i--) {
+            heapify(arr, i);
+        }
+        while (size > 0) {
+            Collections.swap(arr, 0, size - 1);
+            count++;
+            size--;
+            heapify(arr, 0);
+        }
         return arr;
     }
 
+    public static void heapify(ArrayList<Integer> arr, int i) {
+        int next = i;
+        if (2 * i + 1 < size && arr.get(2 * i + 1) > arr.get(next)) next = 2 * i + 1;
+        if (2 * i + 2 < size && arr.get(2 * i + 2) > arr.get(next)) next = 2 * i + 2;
+        count += 2;
+
+        if (next == i) return;
+        Collections.swap(arr, i, next);
+        count++;
+        heapify(arr, next);
+    }
 
 }
