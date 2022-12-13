@@ -4,6 +4,7 @@
     <list default="true" id="26629b5e-e7f4-4d0f-895f-835836e1321c" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sorting.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sorting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Sorting/Sorting.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Sorting/Sorting.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +39,7 @@
       <option name="presentableId" value="Default" />
       <updated>1670805988507</updated>
       <workItem from="1670805989629" duration="102000" />
-      <workItem from="1670908884404" duration="7004000" />
+      <workItem from="1670908884404" duration="10789000" />
     </task>
     <servers />
   </component>
