@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 public class Sorting {
 
-    static final int REPETITION = 1000;
+    static final int REPETITION = 10000;
 
     static int count = 0;
 
@@ -17,6 +17,8 @@ public class Sorting {
         int[] result = new int[72];
         boolean check = true;
         String pivotChoice;
+
+        long startTime = System.currentTimeMillis();
 
         pivotChoice = "First";
         for (int i = 0; i < 8; i++) {
@@ -31,6 +33,7 @@ public class Sorting {
             result[2 * i] = count / REPETITION;
             result[2 * i + 1] = (int)(time / REPETITION);
         }
+        System.out.print("[" + (System.currentTimeMillis() - startTime) / 1000 + "s] ");
         System.out.println("Quicksort that choice first element as pivot is done.");
 
         pivotChoice = "Random";
@@ -46,6 +49,7 @@ public class Sorting {
             result[2 * i + 16] = count / REPETITION;
             result[2 * i + 17] = (int)(time / REPETITION);
         }
+        System.out.print("[" + (System.currentTimeMillis() - startTime) / 1000 + "s] ");
         System.out.println("Quicksort that choice random element as pivot is done.");
 
         pivotChoice = "Median";
@@ -61,6 +65,7 @@ public class Sorting {
             result[2 * i + 32] = count / REPETITION;
             result[2 * i + 33] = (int)(time / REPETITION);
         }
+        System.out.print("[" + (System.currentTimeMillis() - startTime) / 1000 + "s] ");
         System.out.println("Quicksort that choice median element as pivot is done.");
 
         for (int i = 0; i < 8; i++) {
@@ -75,6 +80,7 @@ public class Sorting {
             result[2 * i + 48] = count / REPETITION;
             result[2 * i + 49] = (int)(time / REPETITION);
         }
+        System.out.print("[" + (System.currentTimeMillis() - startTime) / 1000 + "s] ");
         System.out.println("Heapsort is done.");
 
         for (int i = 0; i < 8; i++) {
@@ -91,15 +97,19 @@ public class Sorting {
             }
             result[i + 64] = (int)(time / REPETITION);
         }
+        System.out.print("[" + (System.currentTimeMillis() - startTime) / 1000 + "s] ");
         System.out.println("Using sort method is done.");
 
-        System.out.println(check);
-        System.out.println("QS(First)\t\tQS(Random)\t\tQS(Median)\t\tHeapsort\t\t.sort");
-        System.out.println("Count\tTime\tCount\tTime\tCount\tTime\tCount\tTime\tTime");
+        System.out.println(check + "\tQS(First)\t\tQS(Random)\t\tQS(Median)\t\tHeapsort\t\t.sort");
+        System.out.println("Input\tCount\tTime\tCount\tTime\tCount\tTime\tCount\tTime\tTime");
         for (int i = 0; i < 8; i++) {
-            System.out.println(result[2 * i] + "\t" + result[2 * i + 1] + "\t" + result[2 * i + 16] + "\t"
-                    + result[2 * i + 17] + "\t" + result[2 * i + 32] + "\t" + result[2 * i + 33] + "\t"
-                    + result[2 * i + 48] + "\t" + result[2 * i + 49] + "\t" + result[i + 64]);
+            System.out.print(inputSize[i] + "\t");
+            if (i < 3) System.out.print("\t");
+            System.out.println(result[2 * i] + "\t" + result[2 * i + 1] + "\t"
+                    + result[2 * i + 16] + "\t" + result[2 * i + 17] + "\t"
+                    + result[2 * i + 32] + "\t" + result[2 * i + 33] + "\t"
+                    + result[2 * i + 48] + "\t" + result[2 * i + 49] + "\t"
+                    + result[i + 64]);
         }
     }
 
