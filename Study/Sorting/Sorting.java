@@ -1,20 +1,16 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class Sorting {
 
-    static final int REPETITION = 10000;
-
-    static int count = 0;
-
+    static final int REPETITION = 1000;
+    static long count = 0;
     static long time = 0;
-
     static int size;
 
     public static void main(String[] args) {
         int[] inputSize = {100, 200, 500, 1000, 2000, 3000, 4000, 5000};
-        int[] result = new int[72];
+        long[] result = new long[72];
         boolean check = true;
         String pivotChoice;
 
@@ -24,14 +20,14 @@ public class Sorting {
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList arr = randomArray(inputSize[i]);
+                ArrayList<Integer> arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
                 ArrayList<Integer> sorted = quicksort(arr, pivotChoice);
                 time += (System.nanoTime() - start);
                 check &= checker(sorted);
             }
             result[2 * i] = count / REPETITION;
-            result[2 * i + 1] = (int)(time / REPETITION);
+            result[2 * i + 1] = time / REPETITION;
         }
         System.out.print("[" + (System.currentTimeMillis() - startTime) / 1000 + "s] ");
         System.out.println("Quicksort that choice first element as pivot is done.");
@@ -40,14 +36,14 @@ public class Sorting {
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList arr = randomArray(inputSize[i]);
+                ArrayList<Integer> arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
                 ArrayList<Integer> sorted = quicksort(arr, pivotChoice);
                 time += (System.nanoTime() - start);
                 check &= checker(sorted);
             }
             result[2 * i + 16] = count / REPETITION;
-            result[2 * i + 17] = (int)(time / REPETITION);
+            result[2 * i + 17] = time / REPETITION;
         }
         System.out.print("[" + (System.currentTimeMillis() - startTime) / 1000 + "s] ");
         System.out.println("Quicksort that choice random element as pivot is done.");
@@ -56,14 +52,14 @@ public class Sorting {
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList arr = randomArray(inputSize[i]);
+                ArrayList<Integer> arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
                 ArrayList<Integer> sorted = quicksort(arr, pivotChoice);
                 time += (System.nanoTime() - start);
                 check &= checker(sorted);
             }
             result[2 * i + 32] = count / REPETITION;
-            result[2 * i + 33] = (int)(time / REPETITION);
+            result[2 * i + 33] = time / REPETITION;
         }
         System.out.print("[" + (System.currentTimeMillis() - startTime) / 1000 + "s] ");
         System.out.println("Quicksort that choice median element as pivot is done.");
@@ -71,14 +67,14 @@ public class Sorting {
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList arr = randomArray(inputSize[i]);
+                ArrayList<Integer> arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
                 ArrayList<Integer> sorted = heapsort(arr);
                 time += (System.nanoTime() - start);
                 check &= checker(sorted);
             }
             result[2 * i + 48] = count / REPETITION;
-            result[2 * i + 49] = (int)(time / REPETITION);
+            result[2 * i + 49] = time / REPETITION;
         }
         System.out.print("[" + (System.currentTimeMillis() - startTime) / 1000 + "s] ");
         System.out.println("Heapsort is done.");
@@ -87,19 +83,16 @@ public class Sorting {
             init();
             for (int j = 0; j < REPETITION; j++) {
                 long start = System.nanoTime();
-                randomArray(inputSize[i]).sort(new Comparator<Integer>() {
-                    @Override
-                    public int compare(Integer o1, Integer o2) {
-                        return o2 - o1;
-                    }
-                });
+                randomArray(inputSize[i]).sort((o1, o2) -> o2 - o1);
                 time += (System.nanoTime() - start);
             }
-            result[i + 64] = (int)(time / REPETITION);
+            result[i + 64] = time / REPETITION;
         }
         System.out.print("[" + (System.currentTimeMillis() - startTime) / 1000 + "s] ");
         System.out.println("Using sort method is done.");
 
+        for (int i = 0; i < 80; i++) System.out.print("=");
+        System.out.println("");
         System.out.println(check + "\tQS(First)\t\tQS(Random)\t\tQS(Median)\t\tHeapsort\t\t.sort");
         System.out.println("Input\tCount\tTime\tCount\tTime\tCount\tTime\tCount\tTime\tTime");
         for (int i = 0; i < 8; i++) {
@@ -110,7 +103,9 @@ public class Sorting {
                     + result[2 * i + 32] + "\t" + result[2 * i + 33] + "\t"
                     + result[2 * i + 48] + "\t" + result[2 * i + 49] + "\t"
                     + result[i + 64]);
+
         }
+        for (int i = 0; i < 80; i++) System.out.print("=");
     }
 
     public static void init() {
