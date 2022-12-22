@@ -1,94 +1,100 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class Sorting {
 
-    static final int REPETITION = 1000;
-    static long count = 0;
+    static final int REPETITION = 100;
+    static int count = 0;
     static long time = 0;
     static int size;
     static long startTime;
 
     public static void main(String[] args) {
         int[] inputSize = {100, 200, 500, 1000, 2000, 3000, 4000, 5000};
-        long[] result = new long[72];
+        int[] result = new int[72];
         boolean check = true;
-        String pivotChoice;
 
         startTime = System.currentTimeMillis();
-        log("Process Start.");
+        log("Process start.");
 
-        pivotChoice = "First";
+        // Quicksort(first)
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList<Integer> arr = randomArray(inputSize[i]);
+                int[] arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
-                ArrayList<Integer> sorted = quicksort(arr, pivotChoice);
+                int[] sorted = heapsort(arr);
                 time += (System.nanoTime() - start);
-                check &= checker(sorted);
+                check &= resultCheck(sorted);
             }
             result[2 * i] = count / REPETITION;
-            result[2 * i + 1] = time / REPETITION;
+            result[2 * i + 1] = (int)(time / REPETITION);
         }
         log("Quicksort that choice first element as pivot is done.");
 
-        pivotChoice = "Random";
+        // Quicksort(random)
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList<Integer> arr = randomArray(inputSize[i]);
+                int[] arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
-                ArrayList<Integer> sorted = quicksort(arr, pivotChoice);
+                int[] sorted = heapsort(arr);
                 time += (System.nanoTime() - start);
-                check &= checker(sorted);
+                check &= resultCheck(sorted);
             }
             result[2 * i + 16] = count / REPETITION;
-            result[2 * i + 17] = time / REPETITION;
+            result[2 * i + 17] = (int)(time / REPETITION);
         }
         log("Quicksort that choice random element as pivot is done.");
 
-        pivotChoice = "Median";
+        // Quicksort(median)
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList<Integer> arr = randomArray(inputSize[i]);
+                int[] arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
-                ArrayList<Integer> sorted = quicksort(arr, pivotChoice);
+                int[] sorted = heapsort(arr);
                 time += (System.nanoTime() - start);
-                check &= checker(sorted);
+                check &= resultCheck(sorted);
             }
             result[2 * i + 32] = count / REPETITION;
-            result[2 * i + 33] = time / REPETITION;
+            result[2 * i + 33] = (int)(time / REPETITION);
         }
         log("Quicksort that choice median value of the first, last and middle element as pivot is done.");
 
+        // Heapsort
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList<Integer> arr = randomArray(inputSize[i]);
+                int[] arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
-                ArrayList<Integer> sorted = heapsort(arr);
+                int[] sorted = heapsort(arr);
                 time += (System.nanoTime() - start);
-                check &= checker(sorted);
+                check &= resultCheck(sorted);
             }
             result[2 * i + 48] = count / REPETITION;
-            result[2 * i + 49] = time / REPETITION;
+            result[2 * i + 49] = (int)(time / REPETITION);
         }
         log("Heapsort is done.");
 
+        // Arrays.sort(arr)
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
+                int[] arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
-                randomArray(inputSize[i]).sort((o1, o2) -> o2 - o1);
+                Arrays.sort(arr);
+                int[] sorted = arr;
                 time += (System.nanoTime() - start);
+                check &= resultCheck(sorted);
             }
-            result[i + 64] = time / REPETITION;
+            result[i + 64] = (int)(time / REPETITION);
         }
         log("Using sort method is done.");
 
-
+        // Print result
         for (int i = 0; i < 80; i++) System.out.print("=");
         System.out.println("");
         System.out.println(check + "\tQS(First)\t\tQS(Random)\t\tQS(Median)\t\tHeapsort\t\t.sort");
@@ -101,7 +107,6 @@ public class Sorting {
                     + result[2 * i + 32] + "\t" + result[2 * i + 33] + "\t"
                     + result[2 * i + 48] + "\t" + result[2 * i + 49] + "\t"
                     + result[i + 64]);
-
         }
         for (int i = 0; i < 80; i++) System.out.print("=");
         System.out.println();
@@ -119,19 +124,21 @@ public class Sorting {
         System.out.println(text);
     }
 
-    public static ArrayList<Integer> randomArray(int n) {
+    public static int[] randomArray(int n) {
         ArrayList<Integer> arr = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             arr.add(i);
         }
         Collections.shuffle(arr);
-        return arr;
+        int[] result = new int[n];
+        for (int i = 0; i < n; i++) result[i] = arr.get(i);
+        return result;
     }
 
-    public static boolean checker(ArrayList<Integer> arr) {
+    public static boolean resultCheck(int[] arr) {
         boolean result = true;
-        for (int i = 1; i < arr.size(); i++) {
-            if (arr.get(i - 1) > arr.get(i)) {
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i - 1] > arr[i]) {
                 result = false;
                 break;
             }
@@ -139,96 +146,61 @@ public class Sorting {
         return result;
     }
 
-    public static ArrayList<Integer> quicksort(ArrayList<Integer> arr, String pivotChoice){
-        if (arr.size() <= 1) return arr;
-        int index = 0;
-        int pivot;
+    public static int[] quicksortFirst(int[] arr, int first, int last) {
+        if (last - first <= 1) return arr;
 
-        switch (pivotChoice) {
-            case "First" -> index = 0;
-            case "Random" -> index = (int) (Math.random() * arr.size());
-            case "Median" -> {
-                count++;
-                if (arr.get(0) <= arr.get(arr.size() / 2)) {
-                    count++;
-                    if (arr.get(arr.size() / 2) <= arr.get(arr.size() - 1)) {
-                        index = arr.size() / 2;
-                    } else {
-                        count++;
-                        if (arr.get(0) <= arr.get(arr.size() - 1)) {
-                            index = arr.size() - 1;
-                        } else {
-                            index = 0;
-                        }
-                    }
-                } else {
-                    count++;
-                    if (arr.get(arr.size() / 2) <= arr.get(arr.size() - 1)) {
-                        count++;
-                        if (arr.get(0) <= arr.get(arr.size() - 1)) {
-                            index = 0;
-                        } else {
-                            index = arr.size() - 1;
-                        }
-                    } else {
-                        index = arr.size() / 2;
-                    }
-                }
-            }
-        }
+        int pivot = first;
 
-        pivot = arr.get(index);
-
-        ArrayList<Integer> left = new ArrayList<>();
-        ArrayList<Integer> equal = new ArrayList<>();
-        ArrayList<Integer> right = new ArrayList<>();
-
-        for (int n : arr) {
-            count += 2;
-            if (n < pivot) {
-                left.add(n);
-            }
-            else if (n > pivot) {
-                right.add(n);
-            }
-            else {
-                equal.add(n);
-            }
-        }
-
-        ArrayList<Integer> result = new ArrayList<>();
-        result.addAll(quicksort(left, pivotChoice));
-        result.addAll(equal);
-        result.addAll(quicksort(right, pivotChoice));
-
-        return result;
+        // quicksort
+        return arr;
     }
 
-    public static ArrayList<Integer> heapsort(ArrayList<Integer> arr) {
-        if (arr.size() <= 1) return arr;
+    public static int[] quicksortRandom(int[] arr, int first, int last) {
+        if (last - first <= 1) return arr;
 
-        size = arr.size();
+        int pivot = (int) (Math.random() * (last - first));
+
+        // quicksort
+        return arr;
+    }
+
+    public static int[] quicksortMedian(int[] arr, int first, int last) {
+        if (last - first <= 1) return arr;
+
+        int pivot = first;
+
+        // quicksort
+        return arr;
+    }
+
+    public static int[] heapsort(int[] arr) {
+        if (arr.length <= 1) return arr;
+
+        size = arr.length;
         for (int i = size - 1; i >= 0; i--) {
             heapify(arr, i);
         }
         while (size > 0) {
-            Collections.swap(arr, 0, size - 1);
-            count++;
+            int temp = arr[0];
+            arr[0] = arr[size - 1];
+            arr[size - 1] = temp;
+            count += 3;
             size--;
             heapify(arr, 0);
         }
-
         return arr;
     }
 
-    public static void heapify(ArrayList<Integer> arr, int i) {
+    public static void heapify(int[] arr, int i) {
         int next = i;
-        if (2 * i + 1 < size && arr.get(2 * i + 1) > arr.get(next)) next = 2 * i + 1;
-        if (2 * i + 2 < size && arr.get(2 * i + 2) > arr.get(next)) next = 2 * i + 2;
+        if (2 * i + 1 < size && arr[2 * i + 1] > arr[next]) next = 2 * i + 1;
+        if (2 * i + 2 < size && arr[2 * i + 2] > arr[next]) next = 2 * i + 2;
         count += 2;
 
         if (next == i) return;
-        Collections.swap(arr, i, next);
+        int temp = arr[i];
+        arr[i] = arr[next];
+        arr[next] = temp;
         count++;
         heapify(arr, next);
     }
