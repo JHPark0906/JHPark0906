@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="26629b5e-e7f4-4d0f-895f-835836e1321c" name="변경" comment="">
+    <list default="true" id="26629b5e-e7f4-4d0f-895f-835836e1321c" name="변경" comment="변경">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Sorting.java" beforeDir="false" afterPath="$PROJECT_DIR$/Sorting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Sorting/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Sorting/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Sorting/Sorting.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Sorting/Sorting.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -12,6 +13,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/../.." value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="MarkdownSettingsMigration">
