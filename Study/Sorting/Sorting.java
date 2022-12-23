@@ -1,97 +1,132 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Sorting {
 
-    static final int REPETITION = 1000;
+    static final int REPETITION = 1000000;
     static long count = 0;
     static long time = 0;
     static int size;
     static long startTime;
+    static boolean isWarned = false;
 
     public static void main(String[] args) {
         int[] inputSize = {100, 200, 500, 1000, 2000, 3000, 4000, 5000};
         long[] result = new long[72];
         boolean check = true;
-        String pivotChoice;
 
         startTime = System.currentTimeMillis();
-        log("Process Start.");
+        log("Process start.");
 
-        pivotChoice = "First";
+        // Quicksort(first)
+        log("Quicksort that choice first element as a pivot is starting now.");
+        isWarned = false;
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList<Integer> arr = randomArray(inputSize[i]);
+                int[] arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
-                ArrayList<Integer> sorted = quicksort(arr, pivotChoice);
+                quicksortFirst(arr, 0, arr.length - 1);
                 time += (System.nanoTime() - start);
-                check &= checker(sorted);
+                check &= resultCheck(arr);
+                if (!isWarned && !check) {
+                    log("Warning. Result is not sorted.");
+                    isWarned = true;
+                }
             }
             result[2 * i] = count / REPETITION;
-            result[2 * i + 1] = time / REPETITION;
+            result[2 * i + 1] = (int)(time / REPETITION);
         }
-        log("Quicksort that choice first element as pivot is done.");
+        log("Quicksort that choice first element as a pivot is done.");
 
-        pivotChoice = "Random";
+        // Quicksort(random)
+        log("Quicksort that choice random element as a pivot is starting now.");
+        isWarned = false;
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList<Integer> arr = randomArray(inputSize[i]);
+                int[] arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
-                ArrayList<Integer> sorted = quicksort(arr, pivotChoice);
+                quicksortRandom(arr, 0, arr.length - 1);
                 time += (System.nanoTime() - start);
-                check &= checker(sorted);
+                check &= resultCheck(arr);
+                if (!isWarned && !check) {
+                    log("Warning. Result is not sorted.");
+                    isWarned = true;
+                }
             }
             result[2 * i + 16] = count / REPETITION;
-            result[2 * i + 17] = time / REPETITION;
+            result[2 * i + 17] = (int)(time / REPETITION);
         }
-        log("Quicksort that choice random element as pivot is done.");
+        log("Quicksort that choice random element as a pivot is done.");
 
-        pivotChoice = "Median";
+        // Quicksort(median)
+        log("Quicksort that choice median value of the first, last and middle element as a pivot is starting now.");
+        isWarned = false;
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList<Integer> arr = randomArray(inputSize[i]);
+                int[] arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
-                ArrayList<Integer> sorted = quicksort(arr, pivotChoice);
+                quicksortMedian(arr, 0, arr.length - 1);
                 time += (System.nanoTime() - start);
-                check &= checker(sorted);
+                check &= resultCheck(arr);
+                if (!isWarned && !check) {
+                    log("Warning. Result is not sorted.");
+                    isWarned = true;
+                }
             }
             result[2 * i + 32] = count / REPETITION;
-            result[2 * i + 33] = time / REPETITION;
+            result[2 * i + 33] = (int)(time / REPETITION);
         }
-        log("Quicksort that choice median value of the first, last and middle element as pivot is done.");
+        log("Quicksort that choice median value of the first, last and middle element as a pivot is done.");
 
+        // Heapsort
+        log("Heapsort is starting now.");
+        isWarned = false;
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
-                ArrayList<Integer> arr = randomArray(inputSize[i]);
+                int[] arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
-                ArrayList<Integer> sorted = heapsort(arr);
+                int[] sorted = heapsort(arr);
                 time += (System.nanoTime() - start);
-                check &= checker(sorted);
+                check &= resultCheck(sorted);
+                if (!isWarned && !check) {
+                    log("Warning. Result is not sorted.");
+                    isWarned = true;
+                }
             }
             result[2 * i + 48] = count / REPETITION;
-            result[2 * i + 49] = time / REPETITION;
+            result[2 * i + 49] = (int)(time / REPETITION);
         }
         log("Heapsort is done.");
 
+        // Arrays.sort(arr)
+        log("Sort with java's sorting method is starting now.");
+        isWarned = false;
         for (int i = 0; i < 8; i++) {
             init();
             for (int j = 0; j < REPETITION; j++) {
+                int[] arr = randomArray(inputSize[i]);
                 long start = System.nanoTime();
-                randomArray(inputSize[i]).sort((o1, o2) -> o2 - o1);
+                Arrays.sort(arr);
                 time += (System.nanoTime() - start);
+                check &= resultCheck(arr);
+                if (!isWarned && !check) {
+                    log("Warning. Result is not sorted.");
+                    isWarned = true;
+                }
             }
-            result[i + 64] = time / REPETITION;
+            result[i + 64] = (int)(time / REPETITION);
         }
         log("Using sort method is done.");
 
-
+        // Print result
         for (int i = 0; i < 80; i++) System.out.print("=");
         System.out.println("");
-        System.out.println(check + "\tQS(First)\t\tQS(Random)\t\tQS(Median)\t\tHeapsort\t\t.sort");
+        System.out.println(check + "\tQS(First)\t\tQS(Random)\t\tQS(Median)\t\tHeapsort\t\tSort");
         System.out.println("Input\tCount\tTime\tCount\tTime\tCount\tTime\tCount\tTime\tTime");
         for (int i = 0; i < 8; i++) {
             System.out.print(inputSize[i] + "\t");
@@ -101,11 +136,12 @@ public class Sorting {
                     + result[2 * i + 32] + "\t" + result[2 * i + 33] + "\t"
                     + result[2 * i + 48] + "\t" + result[2 * i + 49] + "\t"
                     + result[i + 64]);
-
         }
         for (int i = 0; i < 80; i++) System.out.print("=");
         System.out.println();
+        if (!check) log("Warning. There are some problems.");
         log("Total process is done.");
+        log("Total repetition is " + REPETITION +".");
     }
 
     public static void init() {
@@ -119,19 +155,21 @@ public class Sorting {
         System.out.println(text);
     }
 
-    public static ArrayList<Integer> randomArray(int n) {
+    public static int[] randomArray(int n) {
         ArrayList<Integer> arr = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             arr.add(i);
         }
         Collections.shuffle(arr);
-        return arr;
+        int[] result = new int[n];
+        for (int i = 0; i < n; i++) result[i] = arr.get(i);
+        return result;
     }
 
-    public static boolean checker(ArrayList<Integer> arr) {
+    public static boolean resultCheck(int[] arr) {
         boolean result = true;
-        for (int i = 1; i < arr.size(); i++) {
-            if (arr.get(i - 1) > arr.get(i)) {
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i - 1] > arr[i]) {
                 result = false;
                 break;
             }
@@ -139,97 +177,189 @@ public class Sorting {
         return result;
     }
 
-    public static ArrayList<Integer> quicksort(ArrayList<Integer> arr, String pivotChoice){
-        if (arr.size() <= 1) return arr;
-        int index = 0;
-        int pivot;
+    public static void quicksortFirst(int[] arr, int low, int high) {
+        if (arr == null || arr.length == 0) {
+            return;
+        }
+        if (low >= high) {
+            return;
+        }
 
-        switch (pivotChoice) {
-            case "First" -> index = 0;
-            case "Random" -> index = (int) (Math.random() * arr.size());
-            case "Median" -> {
+        // Choice pivot
+        int pivot = arr[low];
+
+        // Sorting
+        int i = low, j = high;
+        while (i <= j) {
+            count++;
+            while (arr[i] < pivot) {
                 count++;
-                if (arr.get(0) <= arr.get(arr.size() / 2)) {
-                    count++;
-                    if (arr.get(arr.size() / 2) <= arr.get(arr.size() - 1)) {
-                        index = arr.size() / 2;
-                    } else {
-                        count++;
-                        if (arr.get(0) <= arr.get(arr.size() - 1)) {
-                            index = arr.size() - 1;
-                        } else {
-                            index = 0;
-                        }
-                    }
-                } else {
-                    count++;
-                    if (arr.get(arr.size() / 2) <= arr.get(arr.size() - 1)) {
-                        count++;
-                        if (arr.get(0) <= arr.get(arr.size() - 1)) {
-                            index = 0;
-                        } else {
-                            index = arr.size() - 1;
-                        }
-                    } else {
-                        index = arr.size() / 2;
-                    }
-                }
+                i++;
+            }
+            while (arr[j] > pivot) {
+                count++;
+                j--;
+            }
+            if (i <= j) {
+                swap(arr, i, j);
+                i++;
+                j--;
             }
         }
-
-        pivot = arr.get(index);
-
-        ArrayList<Integer> left = new ArrayList<>();
-        ArrayList<Integer> equal = new ArrayList<>();
-        ArrayList<Integer> right = new ArrayList<>();
-
-        for (int n : arr) {
-            count += 2;
-            if (n < pivot) {
-                left.add(n);
-            }
-            else if (n > pivot) {
-                right.add(n);
-            }
-            else {
-                equal.add(n);
-            }
+        count++;
+        if (low < j) {
+            quicksortFirst(arr, low, j);
         }
-
-        ArrayList<Integer> result = new ArrayList<>();
-        result.addAll(quicksort(left, pivotChoice));
-        result.addAll(equal);
-        result.addAll(quicksort(right, pivotChoice));
-
-        return result;
+        count++;
+        if (high > i) {
+            quicksortFirst(arr, i, high);
+        }
     }
 
-    public static ArrayList<Integer> heapsort(ArrayList<Integer> arr) {
-        if (arr.size() <= 1) return arr;
+    public static void quicksortRandom(int[] arr, int low, int high) {
+        if (arr == null || arr.length == 0) {
+            return;
+        }
+        if (low >= high) {
+            return;
+        }
 
-        size = arr.size();
+        // Choice pivot
+        int pivot = arr[(int)(Math.random() * (high - low) + low)];
+
+        // Sorting
+        int i = low, j = high;
+        while (i <= j) {
+            count++;
+            while (arr[i] < pivot) {
+                count++;
+                i++;
+            }
+            while (arr[j] > pivot) {
+                count++;
+                j--;
+            }
+            count++;
+            if (i <= j) {
+                swap(arr, i, j);
+                i++;
+                j--;
+            }
+        }
+        count++;
+        if (low < j) {
+            quicksortRandom(arr, low, j);
+        }
+        count++;
+        if (high > i) {
+            quicksortRandom(arr, i, high);
+        }
+    }
+
+    public static void quicksortMedian(int[] arr, int low, int high) {
+        if (arr == null || arr.length == 0) {
+            return;
+        }
+        if (low >= high) {
+            return;
+        }
+
+        // Choice pivot
+        int pivot;
+        int mid = low + (high - low) / 2;
+        count++;
+        if (arr[low] <= arr[high]) {
+            count++;
+            if (arr[mid] <= arr[high]) {
+                pivot = arr[mid];
+            } else {
+                count++;
+                if (arr[high] <= arr[low]) {
+                    pivot = arr[low];
+                } else {
+                    pivot = arr[high];
+                }
+            }
+        } else {
+            count++;
+            if (arr[mid] <= arr[high]) {
+                count++;
+                if (arr[high] <= arr[low]) {
+                    pivot = arr[high];
+                } else {
+                    pivot = arr[low];
+                }
+            } else {
+                pivot = arr[mid];
+            }
+        }
+
+        // Sorting
+        int i = low, j = high;
+        while (i <= j) {
+            count++;
+            while (arr[i] < pivot) {
+                count++;
+                i++;
+            }
+            while (arr[j] > pivot) {
+                count++;
+                j--;
+            }
+            count++;
+            if (i <= j) {
+                swap(arr, i, j);
+                i++;
+                j--;
+            }
+        }
+        count++;
+        if (low < j) {
+            quicksortMedian(arr, low, j);
+        }
+        count++;
+        if (high > i) {
+            quicksortMedian(arr, i, high);
+        }
+    }
+
+    public static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+        count += 3;
+    }
+
+    public static int[] heapsort(int[] arr) {
+        if (arr.length <= 1) return arr;
+
+        size = arr.length;
         for (int i = size - 1; i >= 0; i--) {
             heapify(arr, i);
         }
         while (size > 0) {
-            Collections.swap(arr, 0, size - 1);
-            count++;
+            int temp = arr[0];
+            arr[0] = arr[size - 1];
+            arr[size - 1] = temp;
+            count += 3;
             size--;
             heapify(arr, 0);
         }
-
         return arr;
     }
 
-    public static void heapify(ArrayList<Integer> arr, int i) {
+    public static void heapify(int[] arr, int i) {
         int next = i;
-        if (2 * i + 1 < size && arr.get(2 * i + 1) > arr.get(next)) next = 2 * i + 1;
-        if (2 * i + 2 < size && arr.get(2 * i + 2) > arr.get(next)) next = 2 * i + 2;
+        if (2 * i + 1 < size && arr[2 * i + 1] > arr[next]) next = 2 * i + 1;
+        if (2 * i + 2 < size && arr[2 * i + 2] > arr[next]) next = 2 * i + 2;
         count += 2;
 
-        if (next == i) return;
-        Collections.swap(arr, i, next);
         count++;
+        if (next == i) return;
+        int temp = arr[i];
+        arr[i] = arr[next];
+        arr[next] = temp;
+        count += 3;
         heapify(arr, next);
     }
 
