@@ -4,7 +4,7 @@ import java.util.Collections;
 
 public class Sorting {
 
-    static final int REPETITION = 10000;
+    static final int REPETITION = 1000000;
     static long count = 0;
     static long time = 0;
     static int size;
@@ -141,6 +141,7 @@ public class Sorting {
         System.out.println();
         if (!check) log("Warning. There are some problems.");
         log("Total process is done.");
+        log("Total repetition is " + REPETITION +".");
     }
 
     public static void init() {
@@ -187,6 +188,7 @@ public class Sorting {
         // Choice pivot
         int pivot = arr[low];
 
+        // Sorting
         int i = low, j = high;
         while (i <= j) {
             count++;
@@ -225,6 +227,7 @@ public class Sorting {
         // Choice pivot
         int pivot = arr[(int)(Math.random() * (high - low) + low)];
 
+        // Sorting
         int i = low, j = high;
         while (i <= j) {
             count++;
@@ -245,11 +248,11 @@ public class Sorting {
         }
         count++;
         if (low < j) {
-            quicksortFirst(arr, low, j);
+            quicksortRandom(arr, low, j);
         }
         count++;
         if (high > i) {
-            quicksortFirst(arr, i, high);
+            quicksortRandom(arr, i, high);
         }
     }
 
@@ -291,6 +294,7 @@ public class Sorting {
             }
         }
 
+        // Sorting
         int i = low, j = high;
         while (i <= j) {
             count++;
@@ -311,11 +315,11 @@ public class Sorting {
         }
         count++;
         if (low < j) {
-            quicksortFirst(arr, low, j);
+            quicksortMedian(arr, low, j);
         }
         count++;
         if (high > i) {
-            quicksortFirst(arr, i, high);
+            quicksortMedian(arr, i, high);
         }
     }
 
@@ -350,6 +354,7 @@ public class Sorting {
         if (2 * i + 2 < size && arr[2 * i + 2] > arr[next]) next = 2 * i + 2;
         count += 2;
 
+        count++;
         if (next == i) return;
         int temp = arr[i];
         arr[i] = arr[next];
