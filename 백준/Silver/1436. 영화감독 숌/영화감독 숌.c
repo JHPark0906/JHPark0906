@@ -13,7 +13,7 @@ int main(void) {
 int end(int n) {
     if (n == 1) return 666;
     int tmp, lastEndNum = end(n - 1);
-    int i = 0, add[12] = {1, 10, 94, 97, 100, 334, 667, 934, 967, 994, 997, 1000};
+    int i = 0, add[10] = {1, 94, 97, 334, 667, 934, 967, 994, 997, 1000};
     while (1) {
         tmp = lastEndNum + add[i];
         if (isEndNum(tmp)) return tmp;
