@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <math.h>
 
 int getOrderOfVisits(int size, int row, int column);
 
@@ -14,8 +13,8 @@ int getOrderOfVisits(int size, int row, int column) {
     if (size <= 1) return 2 * row + column;
     else {
         int result = 0;
-        if (row >= pow(2, size - 1)) result += (int)pow(2, 2 * size - 1);
-        if (column >= pow(2, size - 1)) result += (int)pow(2, 2 * size - 2);
-        return result + getOrderOfVisits(size - 1, row % (int)pow(2, size - 1), column % (int)pow(2, size - 1));
+        if (row >= 1 << (size - 1)) result += 1 << (2 * size - 1);
+        if (column >= 1 << (size - 1)) result += 1 << (2 * size - 2);
+        return result + getOrderOfVisits(size - 1, row % (1 << (size - 1)), column % (1 << (size - 1)));
     }
 }
