@@ -27,6 +27,6 @@ int getFib(int n) {
     n *= (n < 0 ? -1 : 1);
     if (n <= 1) return n;
     if (fib[n] == 0) fib[n] = getFib(n - 1) + getFib(n - 2);
-    while(fib[n] >= BILLION) fib[n] -= BILLION;
+    if (fib[n] >= BILLION) fib[n] %= BILLION;
     return fib[n];
 }
