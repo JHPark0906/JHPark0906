@@ -9,15 +9,16 @@ int get_count(int start_x, int start_y, int end_x, int end_y);
 int combination(int n, int r);
 
 int main(void) {
-    int n, m, k, k_x, k_y;
-    scanf("%d %d %d", &n, &m, &k);
-    fill_combination_array(n + m);
+    int y, x, k, k_x, k_y;
+    scanf("%d %d %d", &y, &x, &k);
+    fill_combination_array(y + x);
     if (k) {
-        k_x = k % m - 1;
-        k_y = k / m - (k_x ? 0 : 1);
-        printf("%d", get_count(0, 0, k_x, k_y) * get_count(k_x, k_y, m - 1, n - 1));
+        k--;
+        k_x = k % x;
+        k_y = k / x;
+        printf("%d", get_count(0, 0, k_x, k_y) * get_count(k_x, k_y, x - 1, y - 1));
     } else {
-        printf("%d", get_count(0, 0, m - 1, n - 1));
+        printf("%d", get_count(0, 0, x - 1, y - 1));
     }
 
     return 0;
